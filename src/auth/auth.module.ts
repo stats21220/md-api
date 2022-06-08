@@ -1,10 +1,24 @@
-import { Module } from '@nestjs/common';
-import { UserModule } from './user/user.module';
-import { AdminModule } from './admin/admin.module';
-import { AuthController } from './auth.controller';
+import { Module } from "@nestjs/common";
+import { UserModule } from "./user/user.module";
+import { AdminModule } from "./admin/admin.module";
+import { AuthController } from "./auth.controller";
+import { TypegooseModule } from "nestjs-typegoose";
+import { AuthModel } from "./auth.model";
 
 @Module({
-  imports: [UserModule, AdminModule],
+  imports: [
+    TypegooseModule.forFeature([
+      {
+        typegooseClass: AuthModel,
+        schemaOptions: {
+          collection: "Auth"
+        }
+      }
+    ]),
+    UserModule,
+    AdminModule
+  ],
   controllers: [AuthController]
 })
-export class AuthModule {}
+export class AuthModule {
+}

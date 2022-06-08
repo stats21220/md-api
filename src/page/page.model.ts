@@ -12,8 +12,9 @@ export enum TopLevelCategoryEnum {
 
 export interface PageModel extends Base {
 }
+
 export class PageModel extends TimeStamps {
-  @prop({ enum: TopLevelCategoryEnum })
+  @prop({ enum: TopLevelCategoryEnum, type: () => Number })
   firstLevelCategory: TopLevelCategoryEnum;
 
   @prop()
