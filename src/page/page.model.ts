@@ -17,14 +17,14 @@ export class PageModel extends TimeStamps {
   @prop({ enum: TopLevelCategoryEnum, type: () => Number })
   firstLevelCategory: TopLevelCategoryEnum;
 
-  @prop()
+  @prop({ unique: true })
   secondCategory: string;
 
-  @prop()
+  @prop({ unique: true })
   thirdCategory?: string;
 
-  @prop()
-  title?: string;
+  @prop({ unique: true })
+  title: string;
 
   @prop()
   metaTitle: string;
