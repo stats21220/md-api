@@ -1,7 +1,7 @@
 import { prop } from "@typegoose/typegoose";
 import { Base, TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 // @ts-ignore
-import { Types } from "@types/mongoose";
+import { Types } from "mongoose";
 
 export interface ReviewModel extends Base {
 }

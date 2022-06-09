@@ -6,9 +6,24 @@ import { AuthModule } from './auth/auth.module';
 import { CartModule } from './cart/cart.module';
 import { PageModule } from './page/page.module';
 import { ReviewModule } from './review/review.module';
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { TypegooseModule } from "nestjs-typegoose";
+import { getMongoConfig } from "./configs/mongo.config";
 
 @Module({
-  imports: [ProductModule, AuthModule, CartModule, PageModule, ReviewModule],
+  imports: [
+    ConfigModule.forRoot(),
+    TypegooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: getMongoConfig
+    }),
+    ProductModule,
+    AuthModule,
+    CartModule,
+    PageModule,
+    ReviewModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
