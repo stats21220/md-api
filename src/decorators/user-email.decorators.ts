@@ -1,7 +1,6 @@
-import { from } from "rxjs";
 import { createParamDecorator, ExecutionContext } from "@nestjs/common";
 
-export const UserEmail = createParamDecorator(
+export const UserPhone = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
     return request.user;
