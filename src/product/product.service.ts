@@ -32,7 +32,7 @@ export class ProductService {
     return this.productModel.aggregate([
       {
         $match: {
-          categories: dto.category
+          categories: { $all: dto.category }
         }
       },
       {
