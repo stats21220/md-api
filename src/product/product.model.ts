@@ -1,6 +1,7 @@
 import { Base, TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 import { prop } from "@typegoose/typegoose";
 
+
 export class ProductCharacteristics {
   @prop()
   name: string;
@@ -21,7 +22,7 @@ export class ProductModel extends TimeStamps {
   @prop()
   image?: string;
 
-  @prop({unique: true})
+  @prop({ unique: true })
   title: string;
 
   @prop()
@@ -33,16 +34,16 @@ export class ProductModel extends TimeStamps {
   @prop()
   oldPrice?: number;
 
-  @prop({unique: true})
-  productCode: number
+  @prop({ unique: true })
+  productCode: number;
 
   @prop()
   initialRating?: number;
 
-  @prop({enum: AvailableEnum})
-  available: AvailableEnum.success // есть ли в наличии 0 нет 1 да
+  @prop({ enum: AvailableEnum })
+  available: AvailableEnum.success; // есть ли в наличии 0 нет 1 да
 
-  @prop({ type: () => [String] })
+  @prop()
   categories: string[];
 
   @prop({ type: () => [ProductCharacteristics], _id: false }) // id позволяет отключить индексы по вложеному объекту
