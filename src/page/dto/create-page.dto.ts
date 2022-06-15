@@ -1,14 +1,14 @@
-import { TopLevelCategoryEnum } from "../page.model";
-import { IsEnum, IsOptional, IsString } from "class-validator";
+import { IsOptional, IsString } from "class-validator";
 
 export class CreatePageDto {
 
-  @IsEnum(TopLevelCategoryEnum)
-  firstLevelCategory: TopLevelCategoryEnum;
+  @IsString()
+  firstLevelCategory: string;
 
   @IsString()
-  secondCategory: string;
+  secondCategory?: string;
 
+  @IsOptional()
   @IsString()
   thirdCategory?: string;
 

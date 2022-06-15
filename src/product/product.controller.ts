@@ -16,7 +16,6 @@ import { FindProductDto } from "./dto/find-product.dto";
 import { PRODUCT_NOT_FOUND } from "./product.constants";
 import { IdValidationPipe } from "../pipes/add-validation.pipe";
 import { JwtAuthGuard } from "../auth/guards/jwt.guard";
-import { UserPhone } from "../decorators/user-email.decorators";
 
 @Controller("product")
 export class ProductController {

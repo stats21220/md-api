@@ -3,6 +3,7 @@ import { CreatePageDto } from "./dto/create-page.dto";
 import { InjectModel } from "nestjs-typegoose";
 import { PageModel } from "./page.model";
 import { ModelType, DocumentType } from "@typegoose/typegoose/lib/types";
+import { FindPageDto } from "./dto/find-page.dto";
 
 @Injectable()
 export class PageService {
@@ -24,5 +25,18 @@ export class PageService {
 
   async updatePage(id: string, dto: CreatePageDto): Promise<DocumentType<PageModel> | null> {
     return this.pageModel.findByIdAndUpdate(id, dto, { new: true });
+  }
+
+  async findByCategory({ firstLevelCategory }: FindPageDto) {
+    return this.pageModel.aggregate()
+      .match({
+        firstLevelCategory
+      })
+      .group({
+        _id: { secondCategory: "$secondCategory" },
+        pages: {
+          $push: { thirdCategory: "$thirdCategory" }
+        }
+      }).exec();
   }
 }
