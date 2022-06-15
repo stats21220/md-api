@@ -15,6 +15,7 @@ import { IdValidationPipe } from "../pipes/add-validation.pipe";
 import { PageService } from "./page.service";
 import { PAGE_NOT_FOUND } from "./page.constants";
 import { JwtAuthGuard } from "../auth/guards/jwt.guard";
+import { FindPageDto } from "./dto/find-page.dto";
 
 @Controller("page")
 export class PageController {
@@ -56,4 +57,11 @@ export class PageController {
     }
     return updatePage;
   }
+
+  @UsePipes(new ValidationPipe())
+  @Post("find")
+  async findCategory(@Body() dto: FindPageDto) {
+    return await this.pageService.findByCategory(dto);
+  }
+
 }

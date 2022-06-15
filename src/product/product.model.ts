@@ -43,7 +43,7 @@ export class ProductModel extends TimeStamps {
   @prop({ enum: AvailableEnum })
   available: AvailableEnum.success; // есть ли в наличии 0 нет 1 да
 
-  @prop()
+  @prop({ type: () => [String] })
   categories: string[];
 
   @prop({ type: () => [ProductCharacteristics], _id: false }) // id позволяет отключить индексы по вложеному объекту
