@@ -5,6 +5,7 @@ import { ModelType, DocumentType } from "@typegoose/typegoose/lib/types";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { FindProductDto } from "./dto/find-product.dto";
 import { ReviewModel } from "../review/review.model";
+import { Types } from "mongoose";
 
 @Injectable()
 export class ProductService {
@@ -24,8 +25,35 @@ export class ProductService {
     return this.productModel.findByIdAndUpdate(id, dto, { new: true }).exec();
   }
 
-  async getByProductId(id: string): Promise<DocumentType<ProductModel> | null> {
-    return this.productModel.findById(id).exec();
+  async getByProductId(id: string) {
+    return this.productModel.aggregate()
+      .match({
+        _id: Types.ObjectId(id)
+      })
+      .lookup({
+        from: "Review",
+        localField: "_id",
+        foreignField: "productId",
+        as: "reviews"
+      })
+      .addFields({
+        reviewCount: { $size: "$reviews" },
+        reviewAvg: { $avg: "$reviews.rating" },
+        reviews: {
+          $function: {
+            body: `function (reviews) {
+								reviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+								return reviews;
+							}`,
+            args: ["$reviews"],
+            lang: "js"
+          }
+        }
+      }).exec() as (ProductModel & {
+      reviews: ReviewModel[],
+      reviewAvg: number,
+      reviewCount: number
+    });
   }
 
   async findProductWithsReview(dto: FindProductDto) {
@@ -55,18 +83,23 @@ export class ProductService {
         $addFields: {
           reviewCount: { $size: "$reviews" },
           reviewAvg: { $avg: "$reviews.rating" },
-          reviews: {
-            $function: {
-              body: `function (reviews) {
-								reviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-								return reviews;
-							}`,
-              args: ["$reviews"],
-              lang: "js"
-            }
-          }
+          reviews: null
         }
       }
-    ]).exec() as (ProductModel & { review: ReviewModel[], reviewCount: number, reviewAvg: number })[];
+    ]).exec() as (ProductModel & {
+      reviewCount: number,
+      reviewAvg: number
+    }
+      )[];
   }
+
+  async findByText(text: string) {
+    return this.productModel.find({
+      $text: {
+        $search: text,
+        $caseSensitive: false
+      }
+    });
+  }
+
 }

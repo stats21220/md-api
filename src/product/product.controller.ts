@@ -64,4 +64,9 @@ export class ProductController {
   async find(@Body() dto: FindProductDto) {
     return this.productService.findProductWithsReview(dto);
   }
+
+  @Get("textSearch/:text")
+  async textSearch(@Param("text") text: string) {
+    return await this.productService.findByText(text);
+  }
 }
