@@ -1,21 +1,12 @@
 import { prop } from "@typegoose/typegoose";
 import { Base, TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 
+class Page {
 
-export interface PageModel extends Base {
-}
+  @prop({ unique: true })
+  category: string;
 
-export class PageModel extends TimeStamps {
-  @prop()
-  firstLevelCategory: string;
-
-  @prop()
-  secondCategory?: string;
-
-  @prop()
-  thirdCategory?: string;
-
-  @prop()
+  @prop({ text: true })
   title: string;
 
   @prop()
@@ -29,4 +20,23 @@ export class PageModel extends TimeStamps {
 
   @prop()
   seoText: string;
+}
+
+class SecondLevelPage extends Page {
+
+  @prop({ unique: true, type: () => [Page] })
+  thirdLevelPage?: Page[];
+}
+
+
+export interface PageModel extends Base {
+}
+
+export class PageModel extends TimeStamps {
+
+  @prop({ unique: true, type: () => Page })
+  firstLvl: Page;
+
+  @prop({ unique: true, type: () => [SecondLevelPage] })
+  secondLvl: SecondLevelPage[];
 }

@@ -5,6 +5,7 @@ export class CreatePageDto {
   @IsString()
   firstLevelCategory: string;
 
+
   @IsString()
   secondCategory?: string;
 

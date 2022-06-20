@@ -34,8 +34,11 @@ export class PageService {
       })
       .group({
         _id: { secondCategory: "$secondCategory" },
-        pages: {
-          $push: { thirdCategory: "$thirdCategory" }
+        pagesSecondLvl: {
+          $push: {
+            thirdCategory: "$thirdCategory",
+            pathThirdPage: [firstLevelCategory, "$secondCategory", "$thirdCategory"]
+          }
         }
       }).exec();
   }
